@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Help ?
+
+https://steadylearner.medium.com/how-to-make-a-fullstack-dapp-with-react-hardhat-and-ethers-js-with-examples-a961979273d9
+https://docs.metamask.io/guide/ethereum-provider.html
 ## Available Scripts
 
 In the project directory, you can run:
