@@ -10,6 +10,7 @@ import { ChainIdsEnum } from './constants/ChainIdsEnum';
 function App() {
 
   const [provider, setProvider] = useState<any>(null);
+  const [accounts, setAccounts] = useState<string[]>([]);
 
   const clickPay = async (event:any): Promise<any> => {
 
@@ -24,18 +25,16 @@ function App() {
        */
       const chainId = await provider.request({ method: 'eth_chainId' });
       const chainName = (ChainIdsEnum as any)[chainId];
-      let account = await provider.request({ method: 'eth_accounts' });
-      if ( account.length === 0 ) {
-        account = await metamaskLoginModel(provider)
+      let accounts = await provider.request({ method: 'eth_accounts' });
+
+
+      if ( accounts.length === 0 ) {
+        accounts = await metamaskLoginModel(provider)
       }
 
       console.log(`${chainId} : ${chainName}`);
-      console.log(account);
-
-      // provider.on('accountsChanged', (accounts:any) => {
-        
-      // })
-
+      console.log(accounts);
+      setAccounts(accounts);
       
     } else {
       alert("Install metamask extension and create your account !")
@@ -47,7 +46,7 @@ function App() {
     const provider:any = await detectEthereumProvider();
     if ( provider ) {
       setProvider(provider);
-      
+
       // window.ethereum or provider
       (provider as any).on('accountsChanged', (accounts:string[]) => {
         console.log(`${accounts}`)
@@ -67,7 +66,7 @@ function App() {
 
   useEffect( () => {
     loadWeb3Provider();
-  }, []);
+  }, [accounts]);
 
 
 
@@ -75,6 +74,11 @@ function App() {
   return (
     <div className="App">
       <button onClick={clickPay}>Pay</button>
+      {
+        accounts.length > 0 && accounts.map( (address:string) => {
+          return <p> {address} </p>
+        })
+      }
     </div>
   );
 }
