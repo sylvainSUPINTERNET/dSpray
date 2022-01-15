@@ -13,3 +13,10 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
+
+
+https://dev.to/hideckies/ethers-js-cheat-sheet-1h5j
+
+
+npm run generateContractsArtifacts ( generate abi etc for smart contract )
+npm run start ( start GUI ofc)

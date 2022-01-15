@@ -18,4 +18,13 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  */
 module.exports = {
   solidity: "0.8.4",
+  networks: { // if you run npx hardhat node, then plan to testing deploy contract locally, you need to configure it to allow metamask
+    hardhat: {
+      chainId: 1337
+    },
+  },
+  paths: {
+    sources: "./contracts",
+    artifacts: "./src/artifacts"
+  },
 };
