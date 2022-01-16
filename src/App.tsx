@@ -11,6 +11,9 @@ import { metamaskLoginModel } from './services/web3Service';
 import { ChainIdsEnum } from './constants/ChainIdsEnum';
 import { IAnnounce } from './types/IAnnounces';
 import { makeMockAnnounces } from './mock/mockAnnounces';
+import { announcesApi } from './api/announces.api';
+import { AnnouncesList } from './components/announces';
+import { Header } from './components/header';
 
 function App() {
 
@@ -66,7 +69,20 @@ function App() {
       console.log(contract.address);
       console.log(contract.deployTransaction);
       console.log(await contract.owner())
-      console.log(await contract.amount());
+
+      let am = await contract.amount();
+      
+      try {
+        console.log(am);
+        const resp  = announcesApi.addAnnounce({
+          "amount": am.toString(),
+          "contractTitle": await contract.title(),
+          "contractAddress": contract.address
+        });
+        console.log(resp)
+      } catch ( e ) {
+        console.log(e);
+      }
 
 
       // test 2 ( user pay)
@@ -131,6 +147,8 @@ function App() {
       alert("Install metamask extension and create your account !")
     }
   }
+
+
   
   const clickBuy = (ev:any) => {
 
@@ -146,8 +164,10 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div className="">
+      <Header/>
       <button className="" onClick={clickPay}>Pay</button>
+      <AnnouncesList/>
       {
         accounts.length > 0 && accounts.map( (address:string) => {
           return <p> CONNECTED : {address} </p>
