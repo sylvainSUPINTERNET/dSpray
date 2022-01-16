@@ -18,5 +18,5 @@ npx hardhat help
 https://dev.to/hideckies/ethers-js-cheat-sheet-1h5j
 
 
-npm run generateContractsArtifacts ( generate abi etc for smart contract )
+npm run generateContractsArtifacts ( generate abi etc for smart contract ) // configuration overrided in hardhat to create artifact into src and be accessible from react
 npm run start ( start GUI ofc)

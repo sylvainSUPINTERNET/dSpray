@@ -12,10 +12,8 @@ contract AnnounceEscrow {
 
     address public owner;
 
-
     constructor(uint256 amountAnnounce, string memory announceTitle) {
         owner = msg.sender;
-
         // Can't be reassign
         setAmountAndDetails(amountAnnounce, announceTitle);
     }
@@ -50,8 +48,8 @@ contract AnnounceEscrow {
     
     // do not use external, this function is only callable from constructor IN the contract
     function setAmountAndDetails(uint256 amountAnnounce, string memory announceTitle) public {
-        require(amountAnnounce < 2, "Minimum price is 2");
-        require(bytes(announceTitle).length == 0, "Announce title can't be empty");
+        require(amountAnnounce > 2, "Minimum price is 2");
+        require(bytes(announceTitle).length != 0, "Announce title can't be empty");
 
         amount = amountAnnounce;
         title = announceTitle;

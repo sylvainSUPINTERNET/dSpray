@@ -2,8 +2,8 @@ import React, { MouseEventHandler, useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { Contract, ethers, ContractFactory } from "ethers";
-import ArtifactAnnounce from "./artifacts/contracts/Announce.sol/Announce.json";
+import { Contract, ethers, ContractFactory, utils, BigNumber} from "ethers";
+import ArtifactAnnounce from "./artifacts/contracts/AnnounceEscrow.sol/AnnounceEscrow.json";
 
 //import { detectMetamaskExtensionInstalled, isMetaMaskConnected, metamaskLoginModel } from './services/web3Service';
 import detectEthereumProvider from '@metamask/detect-provider';
@@ -45,9 +45,8 @@ function App() {
       // MOCK
       setAnnounces(makeMockAnnounces(accounts[0]));
 
-      // bytecode = fs.readFileSync('storage.bin').toString();
-      //abi = JSON.parse(fs.readFileSync('storage.abi').toString());
-      //const factory = new ContractFactory(contractAbi, contractByteCode);
+
+      // TODO : TO TEST don't forget to compile AnnounceEscrow WITHOUT onlyApplicant modifier for pay ( to test with 1 account)
 
       //const AnnounceContract = await getContractFactory("Announce");
       const provider2 = new ethers.providers.Web3Provider((window as any).ethereum)
@@ -55,18 +54,56 @@ function App() {
       const {abi, bytecode} = ArtifactAnnounce;
       
       const factoryContractAnnounce = new ContractFactory(abi, bytecode,signer);
-      const contractAnnounce = await factoryContractAnnounce.deploy("TOTO announce", 500);
 
-      console.log("1")
+      let etherStr = "5";
+      let wei = ethers.utils.parseEther(etherStr);
+      const contractAnnounce = await factoryContractAnnounce.deploy(wei, "My super announce of fdp");
       const contract:Contract = await contractAnnounce.deployed();
-      console.log("2")
+      
 
-      console.log(contract.address);  
+      const deployedAddress = contract.address;
+      console.log(wei);
+      console.log(contract.address);
       console.log(contract.deployTransaction);
-      console.log("3")
+      console.log(await contract.owner())
+      console.log(await contract.amount());
 
-      console.log("TITLE ?", await contract.title())
-      console.log("TITLE ?", await contract.owner())
+
+      // test 2 ( user pay)
+      const overrides = {
+        value: ethers.utils.parseEther("5.0")
+      }
+
+      let txPay = await contract.pay(overrides);
+      console.log(txPay);
+
+      // test 3 ( withdraw )
+
+      let txWithdraw = await contract.withDraw();
+      console.log(txWithdraw);
+
+
+      // test 4 - How to interact with contract ( from contract address )
+      const factoryContractAnnounceFromAddress = new ContractFactory(abi, bytecode,signer)
+      const deployedContractFound = factoryContractAnnounceFromAddress.attach(deployedAddress);
+      console.log(await deployedContractFound.owner());
+      console.log(await deployedContractFound.applicant());
+
+      // TODO call method pay etc pour tester
+      // TODO essayer de voir si a partir de contract.address j'arrive à retourner une instance d'un contract pour avoir des infos
+      // si c'est le cas, il faut passer par une API intermediare en spring boot pour faire un truck du genre, on save dans mongoDB les address des contracts 
+      // le titre et le montant 
+      // du coup si le mec click sur un contrat, on sait sur lequel tapé
+
+
+      // console.log("2")
+
+      // console.log(contract.address);  
+      // console.log(contract.deployTransaction);
+      // console.log("3")
+
+      // console.log("TITLE ?", await contract.title())
+      // console.log("TITLE ?", await contract.owner())
 
       
     } else {
