@@ -37,6 +37,7 @@ contract AnnounceEscrow {
         console.log('pay by : ', msg.sender);
         applicant = msg.sender;
         console.log('contract balance is now : ', address(this).balance);
+        
     }
 
     function withDraw() onlyOwner external {
