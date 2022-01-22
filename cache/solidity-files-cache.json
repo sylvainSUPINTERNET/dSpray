@@ -37,8 +37,8 @@
       ]
     },
     "E:\\Workspace\\spray\\contracts\\AnnounceEscrow.sol": {
-      "lastModificationDate": 1642349866529,
-      "contentHash": "27d2b8c38bc9f4d42c8821fe6f6a45c1",
+      "lastModificationDate": 1642717900978,
+      "contentHash": "ab0dc497b425c3c3a77022d947a0f110",
       "sourceName": "contracts/AnnounceEscrow.sol",
       "solcConfig": {
         "version": "0.8.4",
