@@ -20,3 +20,22 @@ https://dev.to/hideckies/ethers-js-cheat-sheet-1h5j
 
 npm run generateContractsArtifacts ( generate abi etc for smart contract ) // configuration overrided in hardhat to create artifact into src and be accessible from react
 npm run start ( start GUI ofc)
+
+
+
+# Using another network 
+
+        const provider:any = await detectEthereumProvider();
+        // const chainId = await provider.request({ method: 'matic_chainId' });
+        // const chainName = (ChainIdsEnum as any)[chainId];
+        
+        let accounts = await provider.request({ method: 'eth_accounts' });
+        let c = await provider.request({
+            "method": "wallet_switchEthereumChain",
+            params: [{"chainId": "0x13881"}]
+        })
+        console.log(c);
+        if ( accounts.length === 0 ) {
+          accounts = await metamaskLoginModel(provider)
+        }
+    };
